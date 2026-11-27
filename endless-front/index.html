@@ -102,7 +102,7 @@ function gait24(source,key,frame,ally){
  const sw=source.naturalWidth||source.width,sh=source.naturalHeight||source.height;
  const c=document.createElement('canvas');c.width=sw+8;c.height=sh+8;const q=c.getContext('2d');
  q.imageSmoothingEnabled=false;
- const hip=Math.round(sh*(ally?.64:.62)),mid=Math.round(sw*.5),a=frame*Math.PI/4;
+ const hip=Math.round(sh*(ally ? .64 : .62)),mid=Math.round(sw*.5),a=frame*Math.PI/4;
  // Fixed upper body, articulated lower body with opposite leg phases.
  q.drawImage(source,0,0,sw,hip,4,4,sw,hip);
  const legs=[{sx:0,w:mid,sign:-1,angle:a},{sx:mid,w:sw-mid,sign:1,angle:a+Math.PI}];
@@ -111,7 +111,7 @@ function gait24(source,key,frame,ally){
   let prev=null;
   for(let row=hip;row<sh;row++){
    const k=(row-hip)/Math.max(1,sh-hip-1),swing=Math.sin(leg.angle),lift=Math.max(0,Math.cos(leg.angle));
-   const dx=Math.round((leg.sign*swing*(ally?2.4:2.8))*k*k),dy=Math.round(-lift*(ally?4:3.6)*k*k+swing*1.3*k);
+   const dx=Math.round((swing*(ally?2.4:2.8))*k*k),dy=Math.round(-lift*(ally?4:3.6)*k*k+swing*1.3*k);
    const destY=4+row+dy,destX=4+leg.sx+dx;
    if(prev!==null&&destY>prev+1)q.drawImage(source,leg.sx,row-1,leg.w,1,destX,prev+1,leg.w,destY-prev-1);
    q.drawImage(source,leg.sx,row,leg.w,1,destX,destY,leg.w,1);prev=destY;
